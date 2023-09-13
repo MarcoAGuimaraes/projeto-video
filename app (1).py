@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, request, flash
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
-
 import os
 load_dotenv()
 
@@ -16,7 +15,6 @@ mail_settings = {
     "MAIL_USERNAME": os.getenv("EMAIL"),
     "MAIL_PASSWORD": os.getenv("SENHA")
 }
-
 
 app.config.update(mail_settings)
 mail = Mail(app)
@@ -43,7 +41,7 @@ def send():
         msg = Message(
             subject = f'{formContato.nome} te enviou uma mensagem no portfólio',
             sender = app.config.get("MAIL_USERNAME"),
-            recipients= ['magu1908.contato.teste@gmail.com', app.config.get("MAIL_USERNAME")],
+            recipients= ['docencia.thiago@gmail.com', app.config.get("MAIL_USERNAME")],
             body = f'''
             
             {formContato.nome} com o e-mail {formContato.email}, te enviou a seguinte mensagem:
@@ -58,4 +56,3 @@ def send():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
