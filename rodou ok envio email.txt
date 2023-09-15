@@ -1,0 +1,28 @@
+este rodou ok
+===================
+from flask import Flask
+from flask_mail import Mail, Message
+from config import email, senha
+
+
+app = Flask(__name__)
+app.secret_key = 'magapp'
+mail= Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = email
+app.config['MAIL_PASSWORD'] = senha
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
+@app.route("/")
+def index():
+    msg = Message('Hello', sender = 'magu1908.contato.teste@gmail.com', recipients = ['magu1908@gmail.com','magu1908.contato.teste@gmail.com'])
+    msg.body = "Hello Flask message sent from Flask-Mail"
+    mail.send(msg)
+    return "Sent"
+
+if __name__ == '__main__':
+   app.run(debug = True)

@@ -1,25 +1,22 @@
 from flask import Flask, render_template, redirect, request, flash
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
-
 import os
-load_dotenv()
 
+load_dotenv() 
 app = Flask(__name__)
-app.secret_key = 'thicode'
+app.secret_key = 'magapp'
 
-mail_settings = {
-    "MAIL_SERVER": 'smtp.gmail.com',
-    "MAIL_PORT": 465,
-    "MAIL_USE_TLS": False,
-    "MAIL_USE_SSL": True,
-    "MAIL_USERNAME": os.getenv("EMAIL"),
-    "MAIL_PASSWORD": os.getenv("SENHA")
-}
+mail= Mail(app)
 
-
-app.config.update(mail_settings)
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] =os.getenv("email")
+app.config['MAIL_PASSWORD'] =os.getenv("senha")
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+
 
 class Contato:
     def __init__(self, nome, email, mensagem):
@@ -40,21 +37,12 @@ def send():
             request.form["mensagem"]
         )
 
-        msg = Message(
-            subject = f'{formContato.nome} te enviou uma mensagem no portfólio',
-            sender = app.config.get("MAIL_USERNAME"),
-            recipients= ['magu1908.contato.teste@gmail.com', app.config.get("MAIL_USERNAME")],
-            body = f'''
-            
-            {formContato.nome} com o e-mail {formContato.email}, te enviou a seguinte mensagem:
+        msg = Message('Hello', sender = 'magu1908.contato.teste@gmail.com', recipients = ['magu1908.contato.teste@gmail.com'])
+        msg.body = "Hello Flask message sent from Flask-Mail"
 
-            {formContato.mensagem}
-
-            '''
-        )
         mail.send(msg)
         flash('Mensagem enviada com sucesso!')
-    return redirect('/')
+        return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
