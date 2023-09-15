@@ -36,10 +36,16 @@ def send():
             request.form["email"],
             request.form["mensagem"]
         )
+        
+        msg = Message(subject = f'{formContato.nome} te enviou uma mensagem no portfólio', sender = app.config.get("MAIL_USERNAME"), recipients= ['magu1908@gmail.com', app.config.get("MAIL_USERNAME")],body = f'''
+        {formContato.nome} com o e-mail {formContato.email}, te enviou a seguinte mensagem:
 
-        msg = Message('Hello', sender = 'magu1908.contato.teste@gmail.com', recipients = ['magu1908.contato.teste@gmail.com'])
-        msg.body = "Hello Flask message sent from Flask-Mail"
+        {formContato.mensagem}
 
+        '''
+        )
+		
+		
         mail.send(msg)
         flash('Mensagem enviada com sucesso!')
         return redirect('/')
